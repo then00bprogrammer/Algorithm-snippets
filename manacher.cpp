@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int lps(string input)
+string lps(string input)
 {
     // Preprocess the input to convert it into type abc -> $a$b$c$ to handle even length case.
     // Total size will be 2*n + 1 of this new array.
@@ -51,7 +51,21 @@ int lps(string input)
         end = i + T[i] / 2;
         start = i - T[i] / 2;
     }
-    return *max_element(T.begin(),T.end());
+    int maxi=INT_MIN;
+    int center=-1;
+    for(int i=0;i<T.size();i++){
+        if(T[i]>maxi){
+            maxi=T[i];
+            center=i;
+        }
+    }
+    string res="";
+    int l=center-(maxi/2);
+    int r=center+(maxi/2);
+    for(int i=l;i<=r;i++){
+        if(newInput[i]!='$')res+=newInput[i];
+    }
+    return res;
 }
 
 int main() {
