@@ -43,3 +43,7 @@ int main() {
     cout << findKthLargest(nums, k) << endl;  // Outputs: 5
     return 0;
 }
+
+//NOTE: use nth-element for best implementation of quick-select in c++
+//SYNTAX:
+//nth_element(vec.begin(),vec.begin()+k,vec.end(),OPTIONAL lamda function)
