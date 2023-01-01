@@ -4,4 +4,3 @@
 # Ignore .exe files
 *.exe
 
-/.counting-sort.cpp
