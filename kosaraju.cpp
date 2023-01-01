@@ -3,21 +3,13 @@ using namespace std;
 
 class kosaraju{
 private:
-    void dfsTopo(int node,vector<int> &vis,vector<int> adj[],stack <int> &st){
+    void dfs(int node,vector<int> &vis,vector<int> adj[],stack <int> *st=nullptr){
         vis[node]=1;
         for(auto it:adj[node]){
             if(!vis[it])
-                dfsTopo(it,vis,adj,st);
+                dfs(it,vis,adj,st);
         }
-        st.push(node);
-    }
-
-    void dfs(int node,vector<int> &vis,vector<int> adj[]){
-        vis[node]=1;
-        for(auto it:adj[node]){
-            if(!vis[it])
-                dfs(it,vis,adj);
-        }
+        if(st) st->push(node);
     }
 
 public:
@@ -26,7 +18,9 @@ public:
         stack <int> st;
         for(int i=0;i<V;i++){
             if(!vis[i])
-                dfsTopo(i,vis,adj,st);
+                dfs(i,vis,adj,&st); //Pass stack so that the nodes get sorted in the order of visiting time
+                //We do this so if we visit the scc 1 first then scc 2 and so on...
+                //`https://youtu.be/R6uoSjZ2imo`
         }
 
         vector <int> adjT[V];
@@ -45,12 +39,10 @@ public:
                 ++count;
                 dfs(node,vis,adjT);
             }
-
         }
         
         return count;
     }
-
 };
 
 int main(){
