@@ -29,7 +29,14 @@ struct Node{
 };
 
 class Trie {
-private: Node* root;
+private:
+    Node* root;
+    void dfs(Node* root,vector <string> &ans,string word){
+        if(root->isEnd())ans.push_back(word);
+        for(char c='a';c<='z';c++){
+            if(root->containsKey(c)) dfs(root->get(c),ans,word+c);
+        }
+    }
 public:
     Trie() {
         root=new Node();
@@ -44,6 +51,7 @@ public:
             node->get(word[i])->count+=1;
             node=node->get(word[i]);
         }
+        node->markWord();
     }
     
     int countPrefix(string word) {
@@ -73,6 +81,13 @@ public:
         }
         return true;
     }
+
+    vector<string> lexi(){
+        Node* node=root;
+        vector <string> ans;
+        dfs(node,ans,"");
+        return ans;
+    }
 };
 
 int main() {
@@ -82,6 +97,7 @@ int main() {
     trie.insert("app");
     trie.insert("application");
     trie.insert("apply");
+    trie.insert("test");
 
     // Check if the trie contains the word "apple"
     if (trie.search("apple")) {
@@ -100,6 +116,11 @@ int main() {
     // Count the number of words in the trie that start with the prefix "app"
     int count = trie.countPrefix("app");
     cout << "Number of words with prefix 'app': " << count << endl;
+
+    //Sort the words lexiographically
+    vector <string> ans=trie.lexi();
+    for(auto word:ans)cout<<word<<" ";
+    cout<<endl;
 
     return 0;
 }
