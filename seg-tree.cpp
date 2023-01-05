@@ -5,8 +5,10 @@ using namespace std;
 class segmentTree {
 public:
 	vector<int> segTree;
+	vector<int> lazy;
 	segmentTree(int n) {
 		segTree.resize(4 * n + 1);
+		lazy.resize(4* n + 1);
 	}
 	void build(int ind, int low, int high, vector<int> &arr) {
 		if (low == high) {
@@ -34,6 +36,41 @@ public:
 		segTree[ind] = segTree[2 * ind + 1] + segTree[2 * ind + 2];
 	}
 
+	void rangeUpdate(int ind, int low, int high, int l, int r, int val) {
+		if (low > high) {
+			return;
+		}
+		// apply any pending lazy updates
+		if (lazy[ind] != 0) {
+			segTree[ind] += (high - low + 1) * lazy[ind];
+			if (low != high) {
+				//propogate the lazy update downwards
+				//for the remaining nodes to get updated
+				lazy[2 * ind + 1] += lazy[ind];
+				lazy[2 * ind + 2] += lazy[ind];
+			}
+			lazy[ind] = 0;
+		}
+		// no overlap
+		if (low > r || high < l) {
+			return;
+		}
+		// complete overlap
+		if (low >= l && high <= r) {
+			segTree[ind] += (high - low + 1) * val;
+			if (low != high) {
+				lazy[2 * ind + 1] += val;
+				lazy[2 * ind + 2] += val;
+			}
+			return;
+		}
+		// partial overlap
+		int mid = (low + high) >> 1;
+		rangeUpdate(2 * ind + 1, low, mid, l, r, val);
+		rangeUpdate(2 * ind + 2, mid + 1, high, l, r, val);
+		segTree[ind] = segTree[2 * ind + 1] + segTree[2 * ind + 2];
+	}
+
 	int query(int ind, int low, int high, int l, int r) {
 		if (low > r || high < l) {
 			return 0;
@@ -56,12 +93,25 @@ int main() {
 	vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
 	st.build(0, 0, 9, arr);
 
+	int sum = st.query(0, 0, 9, 1, 6);
+	cout<<sum<<endl;
+	// sum will be equal to the sum of the values in the original array: 3 + 5 + 7 + 9 + 11 + 13 = 48
+
 	// update the value at index 3 to be 10
 	st.update(0, 0, 9, 3, 10);
 
 	// query the sum of the values in the range [1, 6]
-	int sum = st.query(0, 0, 9, 1, 6);
-	// sum will be equal to the sum of the values in the original array: 1 + 3 + 5 + 7 + 9 + 11 = 36
+	sum = st.query(0, 0, 9, 1, 6);
+	cout<<sum<<endl;
+	// sum will be equal to the sum of the values in the original array: 3 + 5 + 10 + 9 + 11 + 13 = 51
+
+	// update the values in the range [2, 5] by 10
+	st.rangeUpdate(0, 0, 9, 2, 5, 10);
+
+	// query the sum of the values in the range [1, 6]
+	sum = st.query(0, 0, 9, 1, 6);
+	cout<<sum<<endl;
+	// sum will be equal to the sum of the values in the original array with the updates applied: 3 + 15 + 20 + 19 + 21 + 13 = 91
 
 	return 0;
 }
