@@ -70,6 +70,17 @@ int main() {
     adj[6].push_back(7);
     adj[7].push_back(6);
 
+//   1---2
+//   |   |
+//   3---4
+//        |
+//        5
+//        |
+//        6
+//        |
+//        7
+
+
     ArticulationPointFinder apf(n, adj);
     vector<int> articulationPoints = apf.findArticulationPoints();
     cout << "Articulation points in the graph:" << endl;
