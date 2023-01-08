@@ -24,7 +24,7 @@ void sieve(int n) {
 }
 
 int main() {
-  sieve(1000000);  // Generate all primes up to 1 million
+  sieve(1e6);  // Generate all primes up to 1 million
 
   // Print the first 20 primes
   for (int i = 0; i < 20; i++) {
