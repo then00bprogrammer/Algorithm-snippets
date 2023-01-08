@@ -1,28 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> find_prime_factors(int n) {
-    vector<int> factors;
-    int i = 2;
-    while (i <= n) {
-        if (n % i == 0) {
-            factors.push_back(i);
-            n /= i;
-        } else {
-            i++;
-        }
+const int N = 1e6 + 5;
+
+bool is_prime[N];
+vector<int> primes;
+
+void sieve(int n) {
+  memset(is_prime, true, sizeof(is_prime));  // Set all values to true
+  is_prime[0] = is_prime[1] = false;  // 0 and 1 are not prime
+
+  // Check all numbers up to sqrt(n)
+  for (int i = 2; i <= sqrt(n); i++) {
+    // If i is prime
+    if (is_prime[i]) {
+      // Mark all of its multiples as non-prime
+      for (int j = i * i; j <= n; j += i) {
+        is_prime[j] = false;
+      }
+      primes.push_back(i);  // Add i to the list of primes
     }
-    return factors;
+  }
+
+  // Add all the remaining numbers that are still marked as prime
+  for (int i = sqrt(n) + 1; i <= n; i++) {
+    if (is_prime[i]) primes.push_back(i);
+  }
 }
 
 int main() {
-    int n;
-    cout << "Enter a number: ";
-    cin >> n;
-    vector<int> factors = find_prime_factors(n);
-    cout << "The prime factors of " << n << " are:";
-    for (int factor : factors) {
-        cout << " " << factor;
-    }
-    cout << endl;
+  sieve(1000000);  // Generate all primes up to 1 million
+
+  // Print the first 20 primes
+  for (int i = 0; i < 20; i++) {
+    cout << primes[i] << " ";
+  }
+  cout << endl;
+
+  return 0;
 }
