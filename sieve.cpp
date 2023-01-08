@@ -11,20 +11,15 @@ void sieve(int n) {
   is_prime[0] = is_prime[1] = false;  // 0 and 1 are not prime
 
   // Check all numbers up to sqrt(n)
-  for (int i = 2; i <= sqrt(n); i++) {
+  for (int i = 2; i <= n; i++) {
     // If i is prime
     if (is_prime[i]) {
       // Mark all of its multiples as non-prime
-      for (int j = i * i; j <= n; j += i) {
+      for (int j = 2* i; j <= n; j += i) {
         is_prime[j] = false;
       }
       primes.push_back(i);  // Add i to the list of primes
     }
-  }
-
-  // Add all the remaining numbers that are still marked as prime
-  for (int i = sqrt(n) + 1; i <= n; i++) {
-    if (is_prime[i]) primes.push_back(i);
   }
 }
 
