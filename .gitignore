@@ -3,5 +3,5 @@
 
 # Ignore .exe files
 *.exe
-/.boring-numpers.cpp
+/boring-numpers.cpp
 
