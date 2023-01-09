@@ -99,6 +99,8 @@ int main() {
     trie.insert("apply");
     trie.insert("test");
 
+    //VISUALIZE - https://www.linkpicture.com/view.php?img=LPic63bbe33cad847660658267
+
     // Check if the trie contains the word "apple"
     if (trie.search("apple")) {
         cout << "Found word: apple" << endl;

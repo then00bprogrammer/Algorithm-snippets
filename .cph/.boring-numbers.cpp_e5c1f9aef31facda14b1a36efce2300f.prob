@@ -1,0 +1,1 @@
+{"name":"Local: boring-numbers","url":"c:\\Nikhil\\C-C++\\Snippets\\boring-numbers.cpp","tests":[{"id":1673251181624,"input":"3\n5 15\n120 125\n779 783","output":"Case #1: 6\nCase #2: 3\nCase #3: 2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Nikhil\\C-C++\\Snippets\\boring-numbers.cpp","group":"local","local":true}

@@ -6,8 +6,9 @@ typedef pair<int, int> pair_int;
 typedef pair<int,pair_int> pair_int_pair;
 
 typedef vector<int> vector1D;
-typedef vector<vector<int>> vector2D;
-typedef vector<vector<vector<int>>> vector3D;
+typedef vector<vector1D> vector2D;
+typedef vector<vector2D> vector3D;
+typedef vector<vector3D> vector4D;
 
 typedef unordered_map <int,int> u_map_int_int;
 typedef map<pair_int,int> map_pair_int;
