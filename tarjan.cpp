@@ -65,6 +65,7 @@ int main() {
     adj[6].push_back(5);
     adj[6].push_back(7);
     adj[7].push_back(6);
+    //VISUALIZE HERE: `https://graphonline.ru/tmp/saved/yH/yHTxrmwpfwqrNOrQ.png`
 
     BridgeFinder bf(n, adj);
     vector<vector<int>> bridges = bf.findBridges();

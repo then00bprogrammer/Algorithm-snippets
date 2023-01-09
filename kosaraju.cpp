@@ -60,6 +60,8 @@ int main(){
     adj[4].push_back(5);
     adj[5].push_back(4);
 
+    // VISUALIZE -> `https://graphonline.ru/tmp/saved/bp/bpfuChsXKyXYKPTv.png`
+
     // Create an instance of the kosaraju class
     kosaraju K;
 

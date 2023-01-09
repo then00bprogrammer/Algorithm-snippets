@@ -108,6 +108,8 @@ int main()
     adj[2].push_back(v5);
     adj[2].push_back(v6);
 
+	// VISUALIZE `https://graphonline.ru/tmp/saved/Lq/LqxjNWONIPXAzqWX.png
+
     Graph obj;
     vector<int> res = obj.dijkstra(V, adj, S);
 
