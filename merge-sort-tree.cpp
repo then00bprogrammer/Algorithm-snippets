@@ -5,7 +5,7 @@ const int INF = 1e9;
 
 class SegmentTree {
 public:
-	vector<vector<int>> segTree;
+	vector<multiset<int>> segTree;
 	SegmentTree(int n) {
 		segTree.resize(4 * n + 1);
 	}
@@ -13,7 +13,7 @@ public:
     // function to build the tree
     void build(vector <int> a, int node, int left, int right) {
         if (left == right) {
-            segTree[node] = vector<int>(1, a[left]);
+            segTree[node].insert(a[left]);
             return;
         } 
         int middle = (left + right) / 2;
@@ -21,8 +21,10 @@ public:
         build(a, node*2+1, middle+1, right);
 
         // merge the values from the left and right child into the current node
-        merge(segTree[node*2].begin(), segTree[node*2].end(), segTree[node*2+1].begin(), segTree[node*2+1].end(),
-                back_inserter(segTree[node]));
+    auto l = segTree[2*node];
+    auto r = segTree[2*node+1];
+    segTree[node].insert(l.begin(), l.end());
+    segTree[node].insert(r.begin(), r.end());
         
     }
 
@@ -32,7 +34,7 @@ public:
             return INF;
 
         if (qleft == left && qright == right) {
-            auto pos = lower_bound(segTree[node].begin(), segTree[node].end(), x);
+            auto pos = segTree[node].upper_bound(x);
             if (pos != segTree[node].end())
                 return *pos;
             return INF;
@@ -54,13 +56,13 @@ int main() {
     // Example 1: 
     // Find the minimum value in the range [2, 6] that is greater than or equal to 7
     int qleft = 2, qright = 6, x = 7;
-    int result = tree.query(1, 0, n - 1, qleft, qright, x);
+    int result = tree.query(1, 0, n - 1, qleft, qright, 7);
     cout << "Minimum value in range [" << qleft << ", " << qright << "] that is greater than or equal to " << x << ": " << result << endl;
 
     // Example 2: 
     // Find the minimum value in the range [0, 4] that is greater than or equal to 4
     qleft = 0, qright = 4, x = 4;
-    result = tree.query(1, 0, n - 1, qleft, qright, x);
+    result = tree.query(1, 0, n - 1, qleft, qright, 5);
     cout << "Minimum value in range [" << qleft << ", " << qright << "] that is greater than or equal to " << x << ": " << result << endl;
 
     return 0;

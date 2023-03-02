@@ -1,0 +1,1 @@
+{"name":"Local: 1485b","url":"c:\\Nikhil\\C-C++\\Snippets\\1485b.cpp","tests":[{"id":1677740270276,"input":"4 2 5\n1 2 4 5\n2 3\n3 4","output":"4\n3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Nikhil\\C-C++\\Snippets\\1485b.cpp","group":"local","local":true}

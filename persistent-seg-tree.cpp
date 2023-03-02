@@ -50,12 +50,8 @@ public:
 		}
 		int mid = (low + high) >> 1;
 		int left_sum = segTree[2*ind+1];
-		if (k <= left_sum) {
-			return kth_smallest(2 * ind + 1, low, mid, k);
-		}
-		else {
-			return kth_smallest(2 * ind + 2, mid+1, high, k-left_sum);
-		}
+		return (k <= left_sum) ? kth_smallest(2 * ind + 1, low, mid, k)
+							   : kth_smallest(2 * ind + 2, mid+1, high, k-left_sum);
 	}
 };
 

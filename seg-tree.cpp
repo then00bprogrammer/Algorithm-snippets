@@ -6,9 +6,11 @@ class segmentTree {
 public:
 	vector<int> segTree;
 	vector<int> lazy;
-	segmentTree(int n) {
+	segmentTree(vector<int> &arr) {
+		int n = arr.size();
 		segTree.resize(4 * n + 1);
 		lazy.resize(4* n + 1);
+		build(0,0,n-1,arr);
 	}
 	void build(int ind, int low, int high, vector<int> &arr) {
 		if (low == high) {
@@ -78,6 +80,18 @@ public:
 		if (low >= l && high <= r) {
 			return segTree[ind];
 		}
+
+		if (lazy[ind] != 0) {
+			segTree[ind] += (high - low + 1) * lazy[ind];
+			if (low != high) {
+				//propogate the lazy update downwards
+				//for the remaining nodes to get updated
+				lazy[2 * ind + 1] += lazy[ind];
+				lazy[2 * ind + 2] += lazy[ind];
+			}
+			lazy[ind] = 0;
+		}
+		
 		int mid = (low + high) >> 1;
 		int left = query(2 * ind + 1, low, mid, l, r);
 		int right = query(2 * ind + 2, mid + 1, high, l, r);
@@ -87,11 +101,10 @@ public:
 
 int main() {
 	// create a segment tree for an array of size 10
-	segmentTree st(10);
 
 	// build the segment tree using the build function
 	vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
-	st.build(0, 0, 9, arr);
+	segmentTree st(arr);
 
 	int sum = st.query(0, 0, 9, 1, 6);
 	cout<<sum<<endl;

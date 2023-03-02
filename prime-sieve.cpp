@@ -4,8 +4,8 @@ using namespace std;
 const int N = 1e6 + 5;
 
 int factors[N];
-vector<int> prime_factors;
 
+vector<int> prime_factors;
 void sieve(int n) {
   // Initialize all elements of factors to 0
   memset(factors, 0, sizeof(factors));

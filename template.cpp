@@ -1,6 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
+#define ll long long
+
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+#define ordered_set tree<ll, null_type,less<ll>, rb_tree_tag,tree_order_statistics_node_update>
 
 typedef pair<int, int> pair_int;
 typedef pair<int,pair_int> pair_int_pair;
