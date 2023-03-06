@@ -1,6 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
+//shorter implementation
+int kmp(string text,string pattern){
+    vector <int> lps(pattern.size(),0);
+    int ind=0;
+    for(int i=1;i<pattern.size();){
+        if(pattern[ind]==pattern[i]) lps[i++]=++ind;
+        else ind?ind=lps[ind-1]:lps[i++]=0; 
+    }
+
+    int i=0,j=0;
+    while(i<text.size() && j<pattern.size()){
+        if(text[i]==pattern[j]){
+            ++i;++j;
+        }
+        else j?j=lps[j-1]:++i; 
+    }
+    return j==pattern.size()?i-j:-1;
+}
+
 class SubstringSearch {
 public:
   /**
@@ -50,6 +70,7 @@ public:
     return (j == pattern.size());
   }
 };
+
 
 int main() {
   SubstringSearch ss;

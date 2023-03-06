@@ -1,1 +1,0 @@
-{"name":"Local: 1537c","url":"c:\\Nikhil\\C-C++\\Snippets\\1537c.cpp","tests":[{"id":1677654387310,"input":"2\n4\n4 2 1 2\n2\n3 1","output":"2 4 1 2 \n1 3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Nikhil\\C-C++\\Snippets\\1537c.cpp","group":"local","local":true}
