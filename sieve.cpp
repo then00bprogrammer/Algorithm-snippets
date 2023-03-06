@@ -3,32 +3,44 @@ using namespace std;
 
 const int N = 1e6 + 5;
 
-bool is_prime[N];
-vector<int> primes;
+int spf[N];
+
+vector<int> prime_factors;
 
 void sieve(int n) {
-  memset(is_prime, true, sizeof(is_prime));  // Set all values to true
-  is_prime[0] = is_prime[1] = false;  // 0 and 1 are not prime
+	spf[1] = 1;
+	for (int i=2; i<N; i++) spf[i] = i;
 
-  // Check all numbers up to sqrt(n)
-  for (int i = 2; i <= n; i++) {
-    // If i is prime
-    if (is_prime[i]) {
-      // Mark all of its multiples as non-prime
-      for (int j = 2* i; j <= n; j += i) {
-        is_prime[j] = false;
-      }
-      primes.push_back(i);  // Add i to the list of primes
-    }
+	for (int i=4; i<N; i+=2)
+		spf[i] = 2;
+
+	for (int i=3; i*i<N; i++)
+	{
+		if (spf[i] == i)
+		{
+			for (int j=i*i; j<N; j+=i)
+				if (spf[j]==j)
+					spf[j] = i;
+		}
+	}
+}
+
+void find_prime_factors(int n) {
+  int x = n;
+  while (x != 1) {
+    prime_factors.push_back(spf[x]);
+    x /= spf[x];
   }
 }
 
 int main() {
-  sieve(1e6);  // Generate all primes up to 1 million
+  sieve(100);  // Find the smallest prime factor of all numbers from 2 to 100
 
-  // Print the first 20 primes
-  for (int i = 0; i < 20; i++) {
-    cout << primes[i] << " ";
+  find_prime_factors(100);  // Find the prime spf of 100
+
+  // Print the prime spf
+  for (int i = 0; i < prime_factors.size(); i++) {
+    cout << prime_factors[i] << " ";
   }
   cout << endl;
 

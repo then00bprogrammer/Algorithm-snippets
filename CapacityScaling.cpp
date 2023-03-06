@@ -15,8 +15,8 @@ int dfs(int u, int curFlow, int limit) {
     if (u == sink) return curFlow;
     vis[u] = true;
     for (auto v : adj[u]) {
-        int edgeCap = min(limit, cap[u][v]);
-        if (edgeCap > 0 && !vis[v]) {
+        int edgeCap = cap[u][v];
+        if (edgeCap >= limit && !vis[v]) {
             int newFlow = dfs(v, min(curFlow, edgeCap), limit);
             if (newFlow > 0) {
                 cap[u][v] -= newFlow;
@@ -100,3 +100,4 @@ The total time complexity of the Capacity Scaling algorithm is then O(kE) = O(E 
 
 Note that the time complexity of the Capacity Scaling algorithm may vary depending on the scaling factor used, and it may not always be optimal for all graphs.
 ***/
+
