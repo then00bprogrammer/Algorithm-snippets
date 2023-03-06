@@ -2,6 +2,20 @@
 
 using namespace std;
 
+/***
+ * `https://www.youtube.com/watch?v=V-sEwsca1ak&t=424s` - Tushar Roy
+ * Linear time Manacher's algorithm to find longest palindromic substring.
+ * There are 4 cases to handle
+ * Case 1 : Right side palindrome is totally contained under current palindrome. In this case do not consider this as center.
+ * Case 2 : Current palindrome is proper suffix of input. Terminate the loop in this case. No better palindrom will be found on right.
+ * Case 3 : Right side palindrome is proper suffix and its corresponding left side palindrome is proper prefix of current palindrome. Make largest such point as
+ * next center.
+ * Case 4 : Right side palindrome is proper suffix but its left corresponding palindrome is be beyond current palindrome. Do not consider this
+ * as center because it will not extend at all.
+ *
+ * To handle even size palindromes replace input string with one containing $ between every input character and in start and end.
+ ***/
+
 string lps(string input)
 {
     // Preprocess the input to convert it into type abc -> $a$b$c$ to handle even length case.

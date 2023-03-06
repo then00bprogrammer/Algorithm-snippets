@@ -26,7 +26,8 @@ public:
   /**
    * Compute temporary array to maintain size of suffix which is same as prefix
    * Time/space complexity is O(size of pattern)
-   * `https://medium.com/@aakashjsr/preprocessing-algorithm-for-kmp-search-lps-array-algorithm-50e35b5bb3cb` for LPS explanation and obviously Tushar Roy
+   * `https://medium.com/@aakashjsr/preprocessing-algorithm-for-kmp-search-lps-array-algorithm-50e35b5bb3cb` for LPS explanation`
+   * `https://www.youtube.com/watch?v=GTJr8OvyEVQ&t=339s` - Tuhsar Roy
    */
   vector<int> computeTemporaryArray(string pattern) {
     vector<int> lps(pattern.size());
