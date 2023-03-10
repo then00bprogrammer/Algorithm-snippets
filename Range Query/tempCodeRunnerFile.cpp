@@ -23,19 +23,6 @@ public:
 		segTree[ind] = segTree[2 * ind + 1] + segTree[2 * ind + 2];
 	}
 
-    void pushDown(int ind,int low,int high){
-		if (lazy[ind] != 0) {
-			segTree[ind] += (high - low + 1) * lazy[ind];
-			if (low != high) {
-				//propogate the lazy update downwards
-				//for the remaining nodes to get updated
-				lazy[2 * ind + 1] += lazy[ind];
-				lazy[2 * ind + 2] += lazy[ind];
-			}
-			lazy[ind] = 0;
-		}
-    }
-
 	void update(int ind, int low, int high, int i, int val) {
 		if (low == high) {
 			segTree[ind] = val;
@@ -52,9 +39,24 @@ public:
 	}
 
 	void rangeUpdate(int ind, int low, int high, int l, int r, int val) {
-		pushDown(ind,low,high);
-		if (low > r || high < l || low>high) return;
-
+		if (low > high) {
+			return;
+		}
+		// apply any pending lazy updates
+		if (lazy[ind] != 0) {
+			segTree[ind] += (high - low + 1) * lazy[ind];
+			if (low != high) {
+				//propogate the lazy update downwards
+				//for the remaining nodes to get updated
+				lazy[2 * ind + 1] += lazy[ind];
+				lazy[2 * ind + 2] += lazy[ind];
+			}
+			lazy[ind] = 0;
+		}
+		// no overlap
+		if (low > r || high < l) {
+			return;
+		}
 		// complete overlap
 		if (low >= l && high <= r) {
 			segTree[ind] += (high - low + 1) * val;
@@ -72,10 +74,23 @@ public:
 	}
 
 	int query(int ind, int low, int high, int l, int r) {
-		pushDown(ind,low,high);
-		if (low > r || high < l || low>high) return 0;
+		if (low > r || high < l) {
+			return 0;
+		}
+		if (low >= l && high <= r) {
+			return segTree[ind];
+		}
 
-		if (low >= l && high <= r) return segTree[ind];
+		if (lazy[ind] != 0) {
+			segTree[ind] += (high - low + 1) * lazy[ind];
+			if (low != high) {
+				//propogate the lazy update downwards
+				//for the remaining nodes to get updated
+				lazy[2 * ind + 1] += lazy[ind];
+				lazy[2 * ind + 2] += lazy[ind];
+			}
+			lazy[ind] = 0;
+		}
 		
 		int mid = (low + high) >> 1;
 		int left = query(2 * ind + 1, low, mid, l, r);
