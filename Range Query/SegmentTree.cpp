@@ -23,7 +23,7 @@ public:
 		segTree[ind] = segTree[2 * ind + 1] + segTree[2 * ind + 2];
 	}
 
-    void pushDown(int ind,int low,int high){
+	void pushDown(int ind,int low,int high){
 		if (lazy[ind] != 0) {
 			segTree[ind] += (high - low + 1) * lazy[ind];
 			if (low != high) {
@@ -34,7 +34,7 @@ public:
 			}
 			lazy[ind] = 0;
 		}
-    }
+	}
 
 	void update(int ind, int low, int high, int i, int val) {
 		if (low == high) {
