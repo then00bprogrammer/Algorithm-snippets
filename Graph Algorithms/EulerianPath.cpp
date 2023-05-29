@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+//O(E)
 class EulerianPath {
 private:
     vector<vector<int>> graph;
