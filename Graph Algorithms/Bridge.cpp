@@ -2,6 +2,7 @@
 using namespace std;
 
 //TARJAN'S ALGORITHM
+//TIME COMPLEXITY : O(E+V) (DFS)
 
 class BridgeFinder {
 private:

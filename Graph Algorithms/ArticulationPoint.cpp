@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+//TIME COMPLEXITY : O(E+V) (DFS)
 class ArticulationPointFinder {
 private:
     int n;

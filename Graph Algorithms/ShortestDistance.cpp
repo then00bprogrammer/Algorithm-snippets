@@ -16,9 +16,7 @@ public:
 
         while (!pq.empty())
         {
-            int node = pq.top().second;
-            int dis = pq.top().first;
-            pq.pop();
+			auto [node, dis] = pq.top(); pq.pop();
 
             for (auto it : adj[node])
             {
@@ -32,6 +30,10 @@ public:
             }
         }
         return distTo;
+
+		//TIME COMPLEXITY : O(V*(log(PQ_SIZE)+(V-1)*log(PQ_SIZE)))
+	    //   			  : O(V^2*log(PQ_SIZE))
+		//				  : O(E*LOG(V))
     }
     
 public:
@@ -58,8 +60,9 @@ public:
 			}
 		}
 
-
 		return dist;
+	
+		//TIME COMPLEXITY : O(V*E)
 	}
 
 public:
@@ -90,6 +93,8 @@ public:
 				}
 			}
 		}
+
+		//TIME COMPLEXITY : O(V^3)
 	}
 };
 

@@ -2,6 +2,7 @@
 using namespace std;
 
 class kosaraju{
+    //TIME COMPLEXITY : O(E+V) (DFS)
 private:
     void dfs(int node,vector<int> &vis,vector<int> adj[],stack <int> *st=nullptr){
         vis[node]=1;

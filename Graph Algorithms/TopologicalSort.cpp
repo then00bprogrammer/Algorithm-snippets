@@ -3,9 +3,19 @@
 using namespace std;
 
 class Solution {
+private:
+	void _dfs(int u,vector <int> adj[],vector <int> &visited,stack <int> &st){
+		visited[u]=true;
+		for(auto v:adj[u]){
+			if(!visited[v]) _dfs(v,adj,visited,st);
+		}
+		st.push(u);
+	}
 public:
-	vector<int> topoSort(int V, vector<int> adj[])
+	vector<int> topoSortBFS(int V, vector<int> adj[])
 	{
+		//Kahn's Algorithm
+		//Can be used to find cycle since if the graph contains cycle topo sorting would contain less than n nodes
 		vector <int> indegree(V,0);
 		for (int i = 0; i < V; i++) {
 			for (auto it : adj[i]) {
@@ -35,6 +45,29 @@ public:
 
 		return topo;
 	}
+
+public:
+	vector <int> topoSortDFS(int V, vector <int> adj[]){
+		stack <int> st;
+		vector <int> vis(V,0);
+
+		for(int i=0;i<V;i++){
+			if(!vis[i]){
+				_dfs(i,adj,vis,st);
+			}
+		}
+
+		vector <int> topo;
+		while(!st.empty()){
+			topo.push_back(st.top());
+			st.pop();
+		}
+
+		return topo;
+
+		//We are pushing child nodes first, hence those nodes dependent on a particular node is pushed first
+		//Hence when we extract it in the reverse order, it is in the topological sort order
+	}
 };
 
 int main() {
@@ -49,13 +82,20 @@ int main() {
 	adj[3].push_back(4);
 
 	Solution sol;
-	vector<int> topo = sol.topoSort(V, adj);
+	vector<int> topoBFS = sol.topoSortBFS(V, adj);
+	vector<int> topoDFS = sol.topoSortDFS(V, adj);
 
 	// print the topological sort
-	for (int i : topo) {
+	for (int i : topoBFS) {
 		cout << i << " ";
 	}
 	cout << endl;
+	for (int i : topoDFS) {
+		cout << i << " ";
+	}
+	cout << endl;
+
+	//Both are correct
 
 	return 0;
 }
