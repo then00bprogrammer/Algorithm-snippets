@@ -17,6 +17,7 @@ public:
         while (!pq.empty())
         {
 			auto [node, dis] = pq.top(); pq.pop();
+			if(distTo[node] != dis) continue;
 
             for (auto it : adj[node])
             {
