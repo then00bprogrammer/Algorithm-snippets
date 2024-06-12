@@ -2,115 +2,110 @@
 
 using namespace std;
 
-class segmentTree {
+struct Node {
+    int sum;
+    
+    Node() {
+        sum = 0;
+    }
+};
+
+class SegmentTree {
 public:
-	vector<int> segTree;
-	vector<int> lazy;
-	segmentTree(vector<int> &arr) {
-		int n = arr.size();
-		segTree.resize(4 * n + 1);
-		lazy.resize(4* n + 1);
-		build(0,0,n-1,arr);
-	}
-	void build(int ind, int low, int high, vector<int> &arr) {
-		if (low == high) {
-			segTree[ind] = arr[low];
-			return;
-		}
-		int mid = low + (high - low) / 2;
-		build(2 * ind + 1, low, mid, arr);
-		build(2 * ind + 2, mid + 1, high, arr);
-		segTree[ind] = segTree[2 * ind + 1] + segTree[2 * ind + 2];
-	}
+    vector<Node> segTree;
+    vector<int> lazy;
 
-	void pushDown(int ind,int low,int high){
-		if (lazy[ind] != 0) {
-			segTree[ind] += (high - low + 1) * lazy[ind];
-			if (low != high) {
-				//propogate the lazy update downwards
-				//for the remaining nodes to get updated
-				lazy[2 * ind + 1] += lazy[ind];
-				lazy[2 * ind + 2] += lazy[ind];
-			}
-			lazy[ind] = 0;
-		}
-	}
+    SegmentTree(vector<int> &arr) {
+        int n = arr.size();
+        segTree.resize(4 * n + 1);
+        lazy.resize(4 * n + 1);
+        build(0, 0, n - 1, arr);
+    }
 
-	void update(int ind, int low, int high, int i, int val) {
-		if (low == high) {
-			segTree[ind] = val;
-			return;
-		}
-		int mid = (low + high) >> 1;
-		if (i <= mid) {
-			update(2 * ind + 1, low, mid, i, val);
-		}
-		else {
-			update(2 * ind + 2, mid + 1, high, i, val);
-		}
-		segTree[ind] = segTree[2 * ind + 1] + segTree[2 * ind + 2];
-	}
+    void build(int ind, int low, int high, vector<int> &arr) {
+        if (low == high) {
+            segTree[ind].sum = arr[low];
+            return;
+        }
+        int mid = low + (high - low) / 2;
+        build(2 * ind + 1, low, mid, arr);
+        build(2 * ind + 2, mid + 1, high, arr);
+        segTree[ind].sum = segTree[2 * ind + 1].sum + segTree[2 * ind + 2].sum;
+    }
 
-	void rangeUpdate(int ind, int low, int high, int l, int r, int val) {
-		pushDown(ind,low,high);
-		if (low > r || high < l || low>high) return;
+    void pushDown(int ind, int low, int high) {
+        if (lazy[ind] != 0) {
+            segTree[ind].sum += (high - low + 1) * lazy[ind];
+            if (low != high) {
+                lazy[2 * ind + 1] += lazy[ind];
+                lazy[2 * ind + 2] += lazy[ind];
+            }
+            lazy[ind] = 0;
+        }
+    }
 
-		// complete overlap
-		if (low >= l && high <= r) {
-			segTree[ind] += (high - low + 1) * val;
-			if (low != high) {
-				lazy[2 * ind + 1] += val;
-				lazy[2 * ind + 2] += val;
-			}
-			return;
-		}
-		// partial overlap
-		int mid = (low + high) >> 1;
-		rangeUpdate(2 * ind + 1, low, mid, l, r, val);
-		rangeUpdate(2 * ind + 2, mid + 1, high, l, r, val);
-		segTree[ind] = segTree[2 * ind + 1] + segTree[2 * ind + 2];
-	}
+    void update(int ind, int low, int high, int i, int val) {
+        pushDown(ind, low, high);
+        if (low == high) {
+            segTree[ind].sum = val;
+            return;
+        }
+        int mid = (low + high) >> 1;
+        if (i <= mid) {
+            update(2 * ind + 1, low, mid, i, val);
+        }
+        else {
+            update(2 * ind + 2, mid + 1, high, i, val);
+        }
+        segTree[ind].sum = segTree[2 * ind + 1].sum + segTree[2 * ind + 2].sum;
+    }
 
-	int query(int ind, int low, int high, int l, int r) {
-		pushDown(ind,low,high);
-		if (low > r || high < l || low>high) return 0;
+    void rangeUpdate(int ind, int low, int high, int l, int r, int val) {
+        pushDown(ind, low, high);
+        if (low > r || high < l || low > high) return;
 
-		if (low >= l && high <= r) return segTree[ind];
-		
-		int mid = (low + high) >> 1;
-		int left = query(2 * ind + 1, low, mid, l, r);
-		int right = query(2 * ind + 2, mid + 1, high, l, r);
-		return left + right;
-	}
+        if (low >= l && high <= r) {
+            segTree[ind].sum += (high - low + 1) * val;
+            if (low != high) {
+                lazy[2 * ind + 1] += val;
+                lazy[2 * ind + 2] += val;
+            }
+            return;
+        }
+        int mid = (low + high) >> 1;
+        rangeUpdate(2 * ind + 1, low, mid, l, r, val);
+        rangeUpdate(2 * ind + 2, mid + 1, high, l, r, val);
+        segTree[ind].sum = segTree[2 * ind + 1].sum + segTree[2 * ind + 2].sum;
+    }
+
+    int query(int ind, int low, int high, int l, int r) {
+        pushDown(ind, low, high);
+        if (low > r || high < l || low > high) return 0;
+
+        if (low >= l && high <= r) return segTree[ind].sum;
+
+        int mid = (low + high) >> 1;
+        int left = query(2 * ind + 1, low, mid, l, r);
+        int right = query(2 * ind + 2, mid + 1, high, l, r);
+        return left + right;
+    }
 };
 
 int main() {
-	// create a segment tree for an array of size 10
+    vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
 
-	// build the segment tree using the build function
-	vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
-	segmentTree st(arr);
+    SegmentTree st(arr);
 
-	int sum = st.query(0, 0, 9, 1, 6);
-	cout<<sum<<endl;
-	// sum will be equal to the sum of the values in the original array: 3 + 5 + 7 + 9 + 11 + 13 = 48
+    int sum = st.query(0, 0, 9, 1, 6);
+    cout << sum << endl;
 
-	// update the value at index 3 to be 10
-	st.update(0, 0, 9, 3, 10);
+    st.update(0, 0, 9, 3, 10);
+    sum = st.query(0, 0, 9, 1, 6);
+    cout << sum << endl;
 
-	// query the sum of the values in the range [1, 6]
-	sum = st.query(0, 0, 9, 1, 6);
-	cout<<sum<<endl;
-	// sum will be equal to the sum of the values in the original array: 3 + 5 + 10 + 9 + 11 + 13 = 51
+    st.rangeUpdate(0, 0, 9, 2, 5, 10);
+    sum = st.query(0, 0, 9, 1, 6);
+    cout << sum << endl;
 
-	// update the values in the range [2, 5] by 10
-	st.rangeUpdate(0, 0, 9, 2, 5, 10);
-
-	// query the sum of the values in the range [1, 6]
-	sum = st.query(0, 0, 9, 1, 6);
-	cout<<sum<<endl;
-	// sum will be equal to the sum of the values in the original array with the updates applied: 3 + 15 + 20 + 19 + 21 + 13 = 91
-
-	return 0;
+    return 0;
 }
-
