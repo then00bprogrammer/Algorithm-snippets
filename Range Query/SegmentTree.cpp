@@ -3,22 +3,20 @@
 using namespace std;
 
 struct Node {
-    int sum;
+    int sum, lazy;
     
     Node() {
-        sum = 0;
+        sum = lazy=0;
     }
 };
 
 class SegmentTree {
 public:
     vector<Node> segTree;
-    vector<int> lazy;
 
     SegmentTree(vector<int> &arr) {
         int n = arr.size();
         segTree.resize(4 * n + 1);
-        lazy.resize(4 * n + 1);
         build(0, 0, n - 1, arr);
     }
 
@@ -34,13 +32,13 @@ public:
     }
 
     void pushDown(int ind, int low, int high) {
-        if (lazy[ind] != 0) {
-            segTree[ind].sum += (high - low + 1) * lazy[ind];
+        if (segTree[ind].lazy != 0) {
+            segTree[ind].sum += (high - low + 1) * segTree[ind].lazy;
             if (low != high) {
-                lazy[2 * ind + 1] += lazy[ind];
-                lazy[2 * ind + 2] += lazy[ind];
+                segTree[2 * ind + 1].lazy += segTree[ind].lazy;
+                segTree[2 * ind + 2].lazy += segTree[ind].lazy;
             }
-            lazy[ind] = 0;
+            segTree[ind].lazy = 0;
         }
     }
 
@@ -67,8 +65,8 @@ public:
         if (low >= l && high <= r) {
             segTree[ind].sum += (high - low + 1) * val;
             if (low != high) {
-                lazy[2 * ind + 1] += val;
-                lazy[2 * ind + 2] += val;
+                segTree[2 * ind + 1].lazy += val;
+                segTree[2 * ind + 2].lazy += val;
             }
             return;
         }
