@@ -21,11 +21,30 @@ public:
         build(a, node*2+1, middle+1, right);
 
         // merge the values from the left and right child into the current node
-    auto l = segTree[2*node];
-    auto r = segTree[2*node+1];
-    segTree[node].insert(l.begin(), l.end());
-    segTree[node].insert(r.begin(), r.end());
+        auto l = segTree[2*node];
+        auto r = segTree[2*node+1];
+        segTree[node].insert(l.begin(), l.end());
+        segTree[node].insert(r.begin(), r.end());
         
+    }
+
+    // function to update the tree
+    void update(int node, int left, int right, int idx, int oldValue, int newValue) {
+        // Remove the old value and insert the new value at the node
+        segTree[node].erase(segTree[node].find(oldValue));
+        segTree[node].insert(newValue);
+
+        if (left == right) {
+            // Leaf node, no need to propagate further
+            return;
+        }
+
+        int middle = (left + right) / 2;
+        if (idx <= middle) {
+            update(node * 2, left, middle, idx, oldValue, newValue);
+        } else {
+            update(node * 2 + 1, middle + 1, right, idx, oldValue, newValue);
+        }
     }
 
     // query -> first number in left--right that is greater than or equal to x
