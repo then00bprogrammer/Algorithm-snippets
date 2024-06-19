@@ -63,11 +63,8 @@ public:
         if (low > r || high < l || low > high) return;
 
         if (low >= l && high <= r) {
-            segTree[ind].sum += (high - low + 1) * val;
-            if (low != high) {
-                segTree[2 * ind + 1].lazy += val;
-                segTree[2 * ind + 2].lazy += val;
-            }
+            segTree[ind].lazy = val;
+            pushDown(ind, low, high);
             return;
         }
         int mid = (low + high) >> 1;
