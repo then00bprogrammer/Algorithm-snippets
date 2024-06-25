@@ -3,10 +3,10 @@
 using namespace std;
 
 struct Node {
-    int sum, lazy;
+    int sum;
     
     Node() {
-        sum = lazy=0;
+        sum =0;
     }
 };
 
@@ -31,19 +31,7 @@ public:
         segTree[ind].sum = segTree[2 * ind + 1].sum + segTree[2 * ind + 2].sum;
     }
 
-    void pushDown(int ind, int low, int high) {
-        if (segTree[ind].lazy != 0) {
-            segTree[ind].sum += (high - low + 1) * segTree[ind].lazy;
-            if (low != high) {
-                segTree[2 * ind + 1].lazy += segTree[ind].lazy;
-                segTree[2 * ind + 2].lazy += segTree[ind].lazy;
-            }
-            segTree[ind].lazy = 0;
-        }
-    }
-
     void update(int ind, int low, int high, int i, int val) {
-        pushDown(ind, low, high);
         if (low == high) {
             segTree[ind].sum = val;
             return;
@@ -58,23 +46,7 @@ public:
         segTree[ind].sum = segTree[2 * ind + 1].sum + segTree[2 * ind + 2].sum;
     }
 
-    void rangeUpdate(int ind, int low, int high, int l, int r, int val) {
-        pushDown(ind, low, high);
-        if (low > r || high < l || low > high) return;
-
-        if (low >= l && high <= r) {
-            segTree[ind].lazy = val;
-            pushDown(ind, low, high);
-            return;
-        }
-        int mid = (low + high) >> 1;
-        rangeUpdate(2 * ind + 1, low, mid, l, r, val);
-        rangeUpdate(2 * ind + 2, mid + 1, high, l, r, val);
-        segTree[ind].sum = segTree[2 * ind + 1].sum + segTree[2 * ind + 2].sum;
-    }
-
     int query(int ind, int low, int high, int l, int r) {
-        pushDown(ind, low, high);
         if (low > r || high < l || low > high) return 0;
 
         if (low >= l && high <= r) return segTree[ind].sum;
@@ -95,10 +67,6 @@ int main() {
     cout << sum << endl;
 
     st.update(0, 0, 9, 3, 10);
-    sum = st.query(0, 0, 9, 1, 6);
-    cout << sum << endl;
-
-    st.rangeUpdate(0, 0, 9, 2, 5, 10);
     sum = st.query(0, 0, 9, 1, 6);
     cout << sum << endl;
 
