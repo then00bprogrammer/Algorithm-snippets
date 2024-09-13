@@ -33,8 +33,9 @@ int main() {
   vector <int> manacher_array = manacher(s);
   int q; cin>>q;
   while(q--) {
-    int center; cin>>center;
-    cout<<manacher_array[2*center]-1<<endl;
+    int l,r;
+    cin>>l>>r;
+    cout<<manacher_array[l+r]-1<<endl;
   }
   return 0;
 }
