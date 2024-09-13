@@ -29,9 +29,12 @@ vector<int> manacher(string s) {
 }
 
 int main() {
-  cout << manacher("abba") << endl;
-  cout << manacher("abbababba") << endl;
-  cout << manacher("babcbaabcbaccba") << endl;
-  cout << manacher("cdbabcbabdab") << endl;
+  string s; cin>>s;
+  vector <int> manacher_array = manacher(s);
+  int q; cin>>q;
+  while(q--) {
+    int center; cin>>center;
+    cout<<manacher_array[2*center]-1<<endl;
+  }
   return 0;
 }
